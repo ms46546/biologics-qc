@@ -90,4 +90,61 @@ fig.add_hline(y=lcl, line_dash="dot", line_color="red", annotation_text="LCL (3S
 fig.update_layout(
     title=f"{method} Control Chart", 
     xaxis_title="Sequence", 
+    yaxis_title="Value",
+    height=500
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+# 10. 통계 요약
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric("Mean", f"{mean_val:.2f}")
+with col2:
+    st.metric("UCL", f"{ucl:.2f}")
+with col3:
+    st.metric("LCL", f"{lcl:.2f}")
+
+# 11. 데이터 미리보기
+st.subheader("📋 데이터 미리보기")
+st.dataframe(selected_df.head(10))
+
+# 12. 이상치 알림
+if selected_df["이상여부"].any():
+    oos_count = selected_df["이상여부"].sum()
+    st.error(f"⚠️ 관리한계 초과 데이터 {oos_count}개 발견!")
+    st.write("이상치 상세:")
+    st.write(selected_df[selected_df["이상여부"]])
+else:
     st.success("✅ 모든 데이터가 관리한계 내입니다")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
